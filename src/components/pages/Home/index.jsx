@@ -1,28 +1,33 @@
 import React from "react";
-import { Button, Input } from "../../atoms";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import moment from "moment";
+import "moment/locale/id";
+import { CariForm } from "../../molecules/";
+import { getData } from "../../store/Home";
 
-const index = () => {
+const Home = () => {
+  const dispatch = useDispatch();
+  const {data} = useSelector(state => state.home);
+
+  const handleSubmit = (e) => {
+    dispatch(getData(e));
+  }
+
   return (
     <div className="container">
-      <div className="text-center">
+      <div className="mt-3 text-center">
         <h1>Tracking</h1>
       </div>
       <div>
-        <div className="row">
+        <div className="mt-3 row">
           <div className="col d-flex justify-content-center">
             <div className="card" style={{ width: "18rem" }}>
               <div className="card-header">
                 <h3>Lacak ordermu</h3>
               </div>
               <div className="card-body">
-                <form>
-                  <Input label="Nomor Order" name="no-order" />
-                  <Button
-                    className="btn btn-primary float-end"
-                    type="submit"
-                    children="Submit"
-                  />
-                </form>
+                <CariForm onSubmit={handleSubmit} />
               </div>
               <div className="card-footer">
                 <p>
@@ -41,11 +46,17 @@ const index = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1234567890</td>
-                  <td>Aceng</td>
-                  <td>Selasa, 1 Maret 2021</td>
-                </tr>
+                {data ? (
+                    data.map((list, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{list.order_number}</td>
+                          <td>{list.customer.name}</td>
+                          <td>{moment(list.order_date).format('dddd, DD MMMM YYYY')}</td>
+                        </tr>
+                      )
+                    })
+                ) : null}
               </tbody>
             </table>
           </div>
@@ -57,55 +68,28 @@ const index = () => {
                 <tr>
                   <th>Waktu</th>
                   <th>Keterangan</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Selasa, 11 April 2023 11:00</td>
-                  <td>Design</td>
-                </tr>
-                <tr>
-                  <td>Selasa, 12 April 2023 12:00</td>
-                  <td>Printing</td>
-                </tr>
-                <tr>
-                  <td>Selasa, 13 April 2023 13:00</td>
-                  <td>Press</td>
-                </tr>
+                {data ? (
+                    data[0].orderTracking.map((list, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{moment(list.date).format('dddd, DD MMMM YYYY')}</td>
+                          <td>{list.tracking.name}</td>
+                          <td>{list.status === 1 ? "Dalam Proses" : "selesai"}</td>
+                        </tr>
+                      )
+                    })
+                ) : null}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      {/* <div className="d-flex">
-        <div className="col"></div>
-        <div className="col">
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Waktu</th>
-                <th>Keterangan</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Selasa, 11 April 2023 11:00</td>
-                <td>Design</td>
-              </tr>
-              <tr>
-                <td>Selasa, 12 April 2023 12:00</td>
-                <td>Printing</td>
-              </tr>
-              <tr>
-                <td>Selasa, 13 April 2023 13:00</td>
-                <td>Press</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> */}
     </div>
   );
 };
 
-export default index;
+export default Home;
