@@ -35,6 +35,7 @@ export const homeSlice = createSlice({
                 state.isLoading = false;
                 console.log("error", action.error.message);
             })
+
     },
 })
 
