@@ -37,8 +37,8 @@ const Home = () => {
             </div>
           </div>
           <div className="col">
-            <table className="table table-striped">
-              <thead>
+            <table className="table table-striped table-hover table-bordered">
+              <thead className="table-dark">
                 <tr>
                   <th>No Order</th>
                   <th>Nama Customer</th>
@@ -63,8 +63,8 @@ const Home = () => {
         </div>
         <div className="row mt-3">
           <div className="col">
-            <table className="table table-striped">
-              <thead>
+            <table className="table table-striped table-hover table-bordered">
+              <thead className="table-dark">
                 <tr>
                   <th>Waktu</th>
                   <th>Keterangan</th>
@@ -73,12 +73,12 @@ const Home = () => {
               </thead>
               <tbody>
                 {data ? (
-                    data[0].orderTracking.map((list, index) => {
+                    data[0].orderTracking.slice().reverse().map((list, index) => {
                       return (
                         <tr key={index}>
-                          <td>{moment(list.date).format('dddd, DD MMMM YYYY')}</td>
+                          <td>{moment(list.date).format('dddd, DD MMMM YYYY HH:mm:ss')}</td>
                           <td>{list.tracking.name}</td>
-                          <td>{list.status === 1 ? "Dalam Proses" : "selesai"}</td>
+                          <td>{list.status === 0 ? "Dalam Proses" : "selesai"}</td>
                         </tr>
                       )
                     })
