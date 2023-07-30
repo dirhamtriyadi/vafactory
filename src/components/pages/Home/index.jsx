@@ -73,7 +73,7 @@ const Home = () => {
               </thead>
               <tbody>
                 {data ? (
-                    data[0].orderTracking.slice().reverse().map((list, index) => {
+                    data[0]?.orderTracking.slice().reverse().map((list, index) => {
                       return (
                         <tr key={index}>
                           <td>{moment(list.date).format('dddd, DD MMMM YYYY HH:mm:ss')}</td>
